@@ -1,1 +1,1 @@
-# 02_dlt_pipeline.py
+# Add Silver DLT table with quality rules
