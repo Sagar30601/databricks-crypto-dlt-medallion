@@ -1,4 +1,4 @@
-# Manully Setup: Create Unity Catalog, Schemas, Volumes
+# Manual Setup: Create Unity Catalog, Schemas, Volumes
 # Cell 5: Verify full structure
 print("=" * 50)
 print("📋 CATALOG")

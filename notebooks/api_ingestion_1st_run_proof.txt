@@ -1,0 +1,93 @@
+ Config loaded
+ Run date : 2026-03-13
+ Output path : /Volumes/crypto_analytics/landing/raw/api/2026-03-13
+ Coins to fetch : 10
+🏓 Ping: {'gecko_says': '(V3) To the Moon!'}
+✅ Helper functions defined
+🚀 Starting OHLCV fetch...
+
+ 📡 Fetching: bitcoin
+    ✅ 42 records fetched
+ 📡 Fetching: ethereum
+    ✅ 42 records fetched
+ 📡 Fetching: solana
+    ✅ 42 records fetched
+ 📡 Fetching: ripple
+    ✅ 42 records fetched
+ 📡 Fetching: binancecoin
+    ✅ 42 records fetched
+ 📡 Fetching: cardano
+    ✅ 42 records fetched
+ 📡 Fetching: dogecoin
+    ✅ 42 records fetched
+ 📡 Fetching: avalanche-2
+    ✅ 42 records fetched
+ 📡 Fetching: chainlink
+    ✅ 42 records fetched
+ 📡 Fetching: polkadot
+    ✅ 42 records fetched
+
+📊 Total OHLCV records fetched: 420
+🚀 Fetching market cap data...
+
+📊 Market cap records fetched: 10
+  bitcoin         | $   1,429,374,279,384 | $ 71,466.00
+  ethereum        | $     253,547,683,357 | $  2,101.67
+  binancecoin     | $      90,252,322,427 | $    663.32
+✅ OHLCV data written to  : /Volumes/crypto_analytics/landing/raw/api/2026-03-13/ohlcv/
+   Rows written           : 420
+   Schema:
+root
+ |-- close: double (nullable = true)
+ |-- coin_id: string (nullable = true)
+ |-- fetched_at: string (nullable = true)
+ |-- high: double (nullable = true)
+ |-- low: double (nullable = true)
+ |-- open: double (nullable = true)
+ |-- source: string (nullable = true)
+ |-- timestamp: long (nullable = true)
+
+✅ Market cap data written to: /Volumes/crypto_analytics/landing/raw/api/2026-03-13/market_cap/
+   Rows written              : 10
+   Schema:
+root
+ |-- coin_id: string (nullable = true)
+ |-- current_price: double (nullable = true)
+ |-- fetched_at: string (nullable = true)
+ |-- market_cap_usd: double (nullable = true)
+ |-- price_change_24h_pct: double (nullable = true)
+ |-- snapshot_date: string (nullable = true)
+ |-- source: string (nullable = true)
+ |-- symbol: string (nullable = true)
+ |-- total_volume: double (nullable = true)
+
+📁 Files in today's API output folder:
+
+  /ohlcv/ → 11 files
+    📄 _SUCCESS (0.0 KB)
+    📄 _committed_6000358123148906898 (0.73 KB)
+    📄 _started_6000358123148906898 (0.0 KB)
+    📄 part-00000-tid-6000358123148906898-ac6947d3-bc20-4ed5-ae22-61dd3ad1fc7b-220-1-c000.json (8.08 KB)
+    📄 part-00001-tid-6000358123148906898-ac6947d3-bc20-4ed5-ae22-61dd3ad1fc7b-224-1-c000.json (8.06 KB)
+    📄 part-00002-tid-6000358123148906898-ac6947d3-bc20-4ed5-ae22-61dd3ad1fc7b-225-1-c000.json (7.48 KB)
+    📄 part-00003-tid-6000358123148906898-ac6947d3-bc20-4ed5-ae22-61dd3ad1fc7b-226-1-c000.json (8.07 KB)
+    📄 part-00004-tid-6000358123148906898-ac6947d3-bc20-4ed5-ae22-61dd3ad1fc7b-221-1-c000.json (8.27 KB)
+    📄 part-00005-tid-6000358123148906898-ac6947d3-bc20-4ed5-ae22-61dd3ad1fc7b-227-1-c000.json (8.2 KB)
+    📄 part-00006-tid-6000358123148906898-ac6947d3-bc20-4ed5-ae22-61dd3ad1fc7b-222-1-c000.json (7.59 KB)
+    📄 part-00007-tid-6000358123148906898-ac6947d3-bc20-4ed5-ae22-61dd3ad1fc7b-223-1-c000.json (7.65 KB)
+
+  /market_cap/ → 11 files
+    📄 _SUCCESS (0.0 KB)
+    📄 _committed_5313513478782899530 (0.73 KB)
+    📄 _started_5313513478782899530 (0.0 KB)
+    📄 part-00000-tid-5313513478782899530-f274c34b-7c7b-4a77-b356-9d6197e68bab-229-1-c000.json (0.23 KB)
+    📄 part-00001-tid-5313513478782899530-f274c34b-7c7b-4a77-b356-9d6197e68bab-233-1-c000.json (0.23 KB)
+    📄 part-00002-tid-5313513478782899530-f274c34b-7c7b-4a77-b356-9d6197e68bab-234-1-c000.json (0.23 KB)
+    📄 part-00003-tid-5313513478782899530-f274c34b-7c7b-4a77-b356-9d6197e68bab-235-1-c000.json (0.45 KB)
+    📄 part-00004-tid-5313513478782899530-f274c34b-7c7b-4a77-b356-9d6197e68bab-230-1-c000.json (0.23 KB)
+    📄 part-00005-tid-5313513478782899530-f274c34b-7c7b-4a77-b356-9d6197e68bab-231-1-c000.json (0.23 KB)
+    📄 part-00006-tid-5313513478782899530-f274c34b-7c7b-4a77-b356-9d6197e68bab-236-1-c000.json (0.22 KB)
+    📄 part-00007-tid-5313513478782899530-f274c34b-7c7b-4a77-b356-9d6197e68bab-232-1-c000.json (0.45 KB)
+
+✅ Ingestor run complete for 2026-03-13
+👀 OHLCV Sample (what Autoloader will pick up):
