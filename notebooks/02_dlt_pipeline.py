@@ -33,9 +33,14 @@ def bronze_csv():
             .option("header", "true")
             .option("skipRows", "1")
             .load(CSV_PATH)
+            .toDF(*[c.replace(" ", "_") for c in spark.read
+                    .format("csv")
+                    .option("header", "true")
+                    .option("skipRows", "1")
+                    .load(CSV_PATH).columns])
             .withColumn("source", F.lit("csv_bckfill"))
             .withColumn("ingested_at", F.current_timestamp())
-            .withColumn("source_file", F.input_file_name())
+            .withColumn("source_file", F.col("_metadata.file_path"))
     )
     
 
@@ -56,7 +61,7 @@ def bronze_api():
             .option("cloudFiles.schemaLocation", SCHEMA_API_PATH)
             .load(f"{API_PATH}*/ohlcv/")          # wildcard picks up all dated folders
             .withColumn("ingested_at", F.current_timestamp())
-            .withColumn("source_file", F.input_file_name())
+            .withColumn("source_file", F.col("_metadata.file_path"))
     )
 
 
@@ -75,9 +80,9 @@ def bronze_market_cap():
             .format("cloudFiles")
             .option("cloudFiles.format", "json")
             .option("cloudFiles.schemaLocation", SCHEMA_MKT_PATH)
-            .load(f"{API_PATH}*/market_caps/")          # wildcard picks up all dated folders
+            .load(f"{API_PATH}*/market_cap/")          # wildcard picks up all dated folders
             .withColumn("ingested_at", F.current_timestamp())
-            .withColumn("source_file", F.input_file_name())
+            .withColumn("source_file", F.col("_metadata.file_path"))
     )
 
 
@@ -96,8 +101,8 @@ def bronze_market_cap():
     }
 )
 def silver_ohlcv():
-     ── CSV branch ──────────────────────────────────
-    # CSV columns: Unix, Date, Symbol, Open, High, Low, Close, Volume XXX, Volume USDT
+    #  ── CSV branch ──────────────────────────────────
+    # CSV columns: Unix, Date, Symbol, Open, High, Low, Close, Volume XX, Volume USDT
     csv = (
         dlt.read_stream("raw_ohlcv_csv")
             .select(
@@ -122,7 +127,7 @@ def silver_ohlcv():
                 F.lower(F.col("coin_id")).alias("coin_id"),
                 F.to_date(
                     F.from_unixtime(F.col("timestamp") / 1000)
-                ).alias("trade_date")
+                ).alias("trade_date"),
                 F.col("open").cast("double"),
                 F.col("high").cast("double"),
                 F.col("low").cast("double"),
@@ -141,8 +146,8 @@ def silver_ohlcv():
                 )
             .withColumn("price_range",
                 F.round(F.col("high") - F.col("low"), 6))
-            .dropDuplicates(["coin_id", "trade_date"])    
-            .filter(F.col("trade_date").isNotNull())    
+            .dropDuplicates(["coin_id", "trade_date"])
+            .filter(F.col("trade_date").isNotNull())
     )
 
 # Gold — Daily OHLCV summary with 7-day moving average
@@ -150,7 +155,7 @@ def silver_ohlcv():
 @dlt.table(
     name = "daily_market_summary",
     comment = "Daily OHLCV per coin with 7d moving average close price",
-    table_properties = {"qaulity": "gold"}
+    table_properties = {"quality": "gold"}
 )
 def gold_daily_summary():
     window_7d = (
@@ -199,7 +204,7 @@ def gold_volatility():
                 F.when(F.col("volatility_stddev") > 5,  "🔴 High")
                  .when(F.col("volatility_stddev") > 2,  "🟡 Medium")
                  .otherwise(                             "🟢 Low")
-            )
+           )
     )
 
 
@@ -210,7 +215,7 @@ def gold_volatility():
     table_properties = {"quality": "gold"}
 )
 def gold_top_performers():
-    window_rank - (
+    window_rank = (
         Window.partitionBy("month")
               .orderBy(F.desc("monthly_return_pct"))
     )
@@ -228,20 +233,35 @@ def gold_top_performers():
             .withColumn("rank", F.rank().over(window_rank))
     )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Gold — Market cap dominance % per coin per snapshot date
+@dlt.table(
+    name = "market_cap_dominance",
+    comment = "Market cap dominance % per coin — daily snapshot",
+    table_properties = {"quality": "gold"}
+)
+def gold_market_cap():
+    window_total = Window.partitionBy("snapshot_date")
+    return (
+        dlt.read_stream("raw_market_cap")
+            .select(
+                F.lower(F.col("coin_id")).alias("coin_id"),
+                F.col("symbol"),
+                F.col("snapshot_date"),
+                F.col("market_cap_usd").cast("double"),
+                F.col("current_price").cast("double"),
+                F.col("total_volume").cast("double"),
+                F.col("price_change_24h_pct").cast("double")
+            )
+            .withColumn("total_market_cap",
+                F.sum("market_cap_usd").over(window_total))
+            .withColumn("dominance_pct",
+                F.round(F.col("market_cap_usd") / F.col("total_market_cap") * 100, 4))
+            .withColumn("mcap_rank",
+                F.rank().over(
+                    Window.partitionBy("snapshot_date")
+                          .orderBy(F.desc("market_cap_usd"))))
+            .drop("total_market_cap")
+    )
 
 
 
