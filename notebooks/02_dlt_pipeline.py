@@ -145,6 +145,104 @@ def silver_ohlcv():
             .filter(F.col("trade_date").isNotNull())    
     )
 
+# Gold — Daily OHLCV summary with 7-day moving average
+
+@dlt.table(
+    name = "daily_market_summary",
+    comment = "Daily OHLCV per coin with 7d moving average close price",
+    table_properties = {"qaulity": "gold"}
+)
+def gold_daily_summary():
+    window_7d = (
+        Window.partitionBy("coin_id")
+              .orderBy("trade_date")
+              .rowsBetween(-6, 0)
+    )
+    return (
+        dlt.read("cleaned_ohlcv")
+           .withColumn("moving_avg_7d", F.round(F.avg("close").over(window_7d), 6))
+           .select(
+               "coin_id",
+                "trade_date",
+                "open", "high", "low", "close",
+                "volume",
+                "daily_return_pct",
+                "price_range",
+                "moving_avg_7d",
+                "data_source"
+           )
+           .orderBy("coin_id", "trade_date")
+    )
+
+# Gold — Volatility and risk classification per coin
+@dlt.table(
+    name = "coin_volatility",
+    comment = "Volatility metrics and risk tier per coin based on daily return stddev",
+    table_properties = {"quality": "gold"}
+)
+
+def gold_volatility():
+    return (
+        dlt.read("cleaned_ohlcv")
+           .groupBy("coin_id")
+           .agg(
+                F.count("*").alias("total_trading_days"), 
+                F.round(F.avg("close"), 6).alias("avg_close_price"),
+                F.round(F.avg("daily_return_pct"), 4).alias("avg_daily_return_pct"),
+                F.round(F.stddev("daily_return_pct"), 4).alias("volatility_stddev"),
+                F.round(F.max("daily_return_pct"), 4).alias("best_day_return_pct"),
+                F.round(F.min("daily_return_pct"), 4).alias("worst_day_return_pct"),
+                F.min("trade_date").alias("data_from"),
+                F.max("trade_date").alias("data_to")
+           )
+           .withColumn("risk_tier",
+                F.when(F.col("volatility_stddev") > 5,  "🔴 High")
+                 .when(F.col("volatility_stddev") > 2,  "🟡 Medium")
+                 .otherwise(                             "🟢 Low")
+            )
+    )
+
+
+# Gold — Monthly return rankings across all coins
+@dlt.table(
+    name = "top_performers_monthly",
+    comment = "Monthly return % per coin ranked best to worst",
+    table_properties = {"quality": "gold"}
+)
+def gold_top_performers():
+    window_rank - (
+        Window.partitionBy("month")
+              .orderBy(F.desc("monthly_return_pct"))
+    )
+    return(
+        dlt.read("cleaned_ohlcv")
+           .withColumn("month", F.date_format("trade_date", "yyyy-MM"))
+           .groupBy("coin_id", "month")
+           .agg(
+               F.round(F.sum("daily_return_pct"), 2).alias("monthly_return_pct"),
+                F.round(F.max("daily_return_pct"), 2).alias("best_single_day_pct"),
+                F.round(F.min("daily_return_pct"), 2).alias("worst_single_day_pct"),
+                F.round(F.avg("close"), 6).alias("avg_monthly_close"),
+                F.count("*").alias("trading_days")
+            )
+            .withColumn("rank", F.rank().over(window_rank))
+    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
