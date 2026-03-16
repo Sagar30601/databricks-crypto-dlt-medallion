@@ -1,5 +1,6 @@
 # Imports & Config
 import dlt
+import re
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
@@ -13,6 +14,10 @@ SCHEMA_CSV_PATH = f"{BASE_PATH}/schema_csv/"
 SCHEMA_API_PATH = f"{BASE_PATH}/schema_api/"
 SCHEMA_MKT_PATH = f"{BASE_PATH}/schema_mkt/"
 
+# ── Helper — defined OUTSIDE any decorator ──────────
+def clean_column_names(df):
+    """Replace spaces and invalid chars in column names with underscores"""
+    return df.toDF(*[re.sub(r'[ ,;{}()\n\t=]', '_', c) for c in df.columns])
 
 # Bronze — Historical CSV via Autoloader
 @dlt.table(
@@ -24,21 +29,19 @@ SCHEMA_MKT_PATH = f"{BASE_PATH}/schema_mkt/"
     }
 )
 def bronze_csv():
-    return (
+    raw_df = (
         spark.readStream
             .format("cloudFiles")
-            .option("cloudFiles.format", "csv")
-            .option("cloudFiles.schemaLocation", SCHEMA_CSV_PATH)
+            .option("cloudFiles.format",           "csv")
+            .option("cloudFiles.schemaLocation",   SCHEMA_CSV_PATH)
             .option("cloudFiles.inferColumnTypes", "true")
-            .option("header", "true")
-            .option("skipRows", "1")
+            .option("header",                      "true")
+            .option("skipRows",                    "1")
             .load(CSV_PATH)
-            .toDF(*[c.replace(" ", "_") for c in spark.read
-                    .format("csv")
-                    .option("header", "true")
-                    .option("skipRows", "1")
-                    .load(CSV_PATH).columns])
-            .withColumn("source", F.lit("csv_bckfill"))
+    )
+    return (
+        clean_column_names(raw_df)          # ← rename all columns first
+            .withColumn("source",      F.lit("csv_backfill"))
             .withColumn("ingested_at", F.current_timestamp())
             .withColumn("source_file", F.col("_metadata.file_path"))
     )
@@ -114,7 +117,7 @@ def silver_ohlcv():
                 F.col("High").cast("double").alias("high"),
                 F.col("Low").cast("double").alias("low"),
                 F.col("Close").cast("double").alias("close"),
-                F.col("Volume USDT").cast("double").alias("volume"),
+                F.col("Volume_USDT").cast("double").alias("volume"),
                 F.lit("csv_backfill").alias("data_source")
             )
     )
@@ -242,7 +245,7 @@ def gold_top_performers():
 def gold_market_cap():
     window_total = Window.partitionBy("snapshot_date")
     return (
-        dlt.read_stream("raw_market_cap")
+        dlt.read("raw_market_cap")
             .select(
                 F.lower(F.col("coin_id")).alias("coin_id"),
                 F.col("symbol"),

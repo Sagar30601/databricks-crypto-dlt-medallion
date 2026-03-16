@@ -137,7 +137,7 @@ all_ohlcv_records = []
 
 for coin in COINS:
   print(f" 📡 Fetching: {coin}")
-  records = fetch_ohlcv(coin_id=coin, days=7)
+  records = fetch_ohlcv(coin_id=coin, days=1)
 
   all_ohlcv_records.extend(records)
   print(f"    ✅ {len(records)} records fetched")
