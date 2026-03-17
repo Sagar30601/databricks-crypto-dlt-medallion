@@ -10,7 +10,7 @@ using Delta Live Tables, Autoloader, Unity Catalog, and AI/BI Dashboards.
 > Bronze → Silver → Gold | 8 tables | 0 errors | 26K+ records processed
 
 ### Page 1 — Price Trends & Market Overview
-![Dashboard Page 1]([architecture/Dashboard-page1.PNG])
+![Dashboard Page 1](architecture/Dashboard-page1.PNG)
 
 ### Page 2 — Heatmap & Rankings
 ![Dashboard Page 2](architecture/Dashboard-page2.PNG)
