@@ -225,11 +225,12 @@
     {
       "name": "ce0c58e7",
       "displayName": "Global Filters",
-      "pageType": "PAGE_TYPE_GLOBAL_FILTERS"
+      "pageType": "PAGE_TYPE_GLOBAL_FILTERS",
+      "layoutVersion": "GRID_V1"
     },
     {
       "name": "75b47e04",
-      "displayName": "Untitled page",
+      "displayName": "Crypto Market Intelligence",
       "layout": [
         {
           "widget": {
@@ -431,8 +432,8 @@
           "position": {
             "x": 0,
             "y": 2,
-            "width": 4,
-            "height": 5
+            "width": 6,
+            "height": 6
           }
         },
         {
@@ -494,10 +495,10 @@
             }
           },
           "position": {
-            "x": 4,
+            "x": 6,
             "y": 2,
-            "width": 4,
-            "height": 5
+            "width": 6,
+            "height": 6
           }
         },
         {
@@ -566,9 +567,369 @@
           },
           "position": {
             "x": 0,
-            "y": 7,
-            "width": 4,
-            "height": 8
+            "y": 8,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "best-vs-worst-single-day-returns-per-coin",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "78ec41bf",
+                  "fields": [
+                    {
+                      "name": "coin_id",
+                      "expression": "`coin_id`"
+                    },
+                    {
+                      "name": "best_day_return_pct",
+                      "expression": "`best_day_return_pct`"
+                    },
+                    {
+                      "name": "worst_day_return_pct",
+                      "expression": "`worst_day_return_pct`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Best vs Worst Single Day Returns per Coin"
+              },
+              "mark": {
+                "colors": [
+                  "#D60A0D",
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "coin_id",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "fields": [
+                    {
+                      "fieldName": "best_day_return_pct"
+                    },
+                    {
+                      "fieldName": "worst_day_return_pct"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 14,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "market-cap-dominance",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "13c5a186",
+                  "fields": [
+                    {
+                      "name": "sum(dominance_pct)",
+                      "expression": "SUM(`dominance_pct`)"
+                    },
+                    {
+                      "name": "coin_id",
+                      "expression": "`coin_id`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Market Cap Dominance %"
+              },
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "sum(dominance_pct)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "coin_id",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 8,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "best-performing-coin-each-month-2025",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "0b777f59",
+                  "fields": [
+                    {
+                      "name": "coin_id",
+                      "expression": "`coin_id`"
+                    },
+                    {
+                      "name": "month",
+                      "expression": "`month`"
+                    },
+                    {
+                      "name": "monthly_return_pct",
+                      "expression": "`monthly_return_pct`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Best Performing Coin Each Month (2025)"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "month",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "monthly_return_pct",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "coin_id",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 14,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "average-returns-heatmap-green-positive-red-negative",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "61b66255",
+                  "fields": [
+                    {
+                      "name": "avg_monthly_return",
+                      "expression": "`avg_monthly_return`"
+                    },
+                    {
+                      "name": "month",
+                      "expression": "`month`"
+                    },
+                    {
+                      "name": "coin_id",
+                      "expression": "`coin_id`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Average Returns Heatmap (Green = Positive, Red = Negative)"
+              },
+              "widgetType": "heatmap",
+              "encodings": {
+                "x": {
+                  "fieldName": "month",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "coin_id",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "color": {
+                  "fieldName": "avg_monthly_return",
+                  "scale": {
+                    "type": "quantitative",
+                    "colorRamp": {
+                      "mode": "scheme",
+                      "scheme": "reds"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 20,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "top-performers-monthly-rankings-2025",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "d6e0e4e0",
+                  "fields": [
+                    {
+                      "name": "rank",
+                      "expression": "`rank`"
+                    },
+                    {
+                      "name": "coin_id",
+                      "expression": "`coin_id`"
+                    },
+                    {
+                      "name": "month",
+                      "expression": "`month`"
+                    },
+                    {
+                      "name": "monthly_return_pct",
+                      "expression": "`monthly_return_pct`"
+                    },
+                    {
+                      "name": "best_single_day_pct",
+                      "expression": "`best_single_day_pct`"
+                    },
+                    {
+                      "name": "worst_single_day_pct",
+                      "expression": "`worst_single_day_pct`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Top Performers Monthly Rankings (2025)"
+              },
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "rank"
+                  },
+                  {
+                    "fieldName": "coin_id"
+                  },
+                  {
+                    "fieldName": "month"
+                  },
+                  {
+                    "fieldName": "monthly_return_pct"
+                  },
+                  {
+                    "fieldName": "best_single_day_pct"
+                  },
+                  {
+                    "fieldName": "worst_single_day_pct"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 20,
+            "width": 6,
+            "height": 6
           }
         }
       ],
