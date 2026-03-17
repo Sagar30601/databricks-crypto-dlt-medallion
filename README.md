@@ -9,6 +9,14 @@ using Delta Live Tables, Autoloader, Unity Catalog, and AI/BI Dashboards.
 
 > Bronze → Silver → Gold | 8 tables | 0 errors | 26K+ records processed
 
+### Page 1 — Price Trends & Market Overview
+![Dashboard Page 1](architecture/Dashboard-page1.png)
+
+### Page 2 — Heatmap & Rankings
+![Dashboard Page 2](architecture/Dashboard-page2.png)
+
+> Built on Databricks AI/BI Dashboard | 9 visualisations | 8 datasets
+
 ## 📊 Live Dashboard
 [🔗 View Live Dashboard](https://dbc-fc5d7400-6f13.cloud.databricks.com/dashboardsv3/01f121286d0a1f1dad58b26d5f14c6fe/published?o=7474654922627967)
 
