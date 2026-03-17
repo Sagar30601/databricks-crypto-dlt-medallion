@@ -1,0 +1,585 @@
+{
+  "datasets": [
+    {
+      "name": "30d30e9a",
+      "displayName": "btc_price_trend",
+      "queryLines": [
+        "SELECT\r\n",
+        "    CASE\r\n",
+        "        WHEN coin_id IN ('btc', 'bitcoin')           THEN 'bitcoin'\r\n",
+        "        WHEN coin_id IN ('bnb', 'binancecoin')       THEN 'binancecoin'\r\n",
+        "        WHEN coin_id IN ('eth', 'ethereum')           THEN 'ethereum'\r\n",
+        "        WHEN coin_id IN ('sol', 'solana')             THEN 'solana'\r\n",
+        "        WHEN coin_id IN ('ada', 'cardano')            THEN 'cardano'\r\n",
+        "        WHEN coin_id IN ('xrp', 'ripple')             THEN 'ripple'\r\n",
+        "        WHEN coin_id IN ('doge', 'dogecoin')          THEN 'dogecoin'\r\n",
+        "        WHEN coin_id IN ('dot', 'polkadot')           THEN 'polkadot'\r\n",
+        "        WHEN coin_id IN ('link', 'chainlink')         THEN 'chainlink'\r\n",
+        "        WHEN coin_id IN ('avax', 'avalanche-2')       THEN 'avalanche'\r\n",
+        "        ELSE coin_id\r\n",
+        "    END AS coin_id,\r\n",
+        "    trade_date,\r\n",
+        "    close,\r\n",
+        "    moving_avg_7d,\r\n",
+        "    daily_return_pct\r\n",
+        "FROM crypto_analytics.gold.daily_market_summary\r\n",
+        "WHERE coin_id = 'btc'\r\n",
+        "  AND trade_date >= '2025-01-01'\r\n",
+        "ORDER BY trade_date\r\n"
+      ]
+    },
+    {
+      "name": "df2ec882",
+      "displayName": "all_coins_price_trend",
+      "queryLines": [
+        "SELECT\r\n",
+        "    CASE\r\n",
+        "        WHEN coin_id IN ('btc', 'bitcoin')           THEN 'bitcoin'\r\n",
+        "        WHEN coin_id IN ('bnb', 'binancecoin')       THEN 'binancecoin'\r\n",
+        "        WHEN coin_id IN ('eth', 'ethereum')           THEN 'ethereum'\r\n",
+        "        WHEN coin_id IN ('sol', 'solana')             THEN 'solana'\r\n",
+        "        WHEN coin_id IN ('ada', 'cardano')            THEN 'cardano'\r\n",
+        "        WHEN coin_id IN ('xrp', 'ripple')             THEN 'ripple'\r\n",
+        "        WHEN coin_id IN ('doge', 'dogecoin')          THEN 'dogecoin'\r\n",
+        "        WHEN coin_id IN ('dot', 'polkadot')           THEN 'polkadot'\r\n",
+        "        WHEN coin_id IN ('link', 'chainlink')         THEN 'chainlink'\r\n",
+        "        WHEN coin_id IN ('avax', 'avalanche-2')       THEN 'avalanche'\r\n",
+        "        ELSE coin_id\r\n",
+        "    END AS coin_id,\r\n",
+        "    trade_date,\r\n",
+        "    close,\r\n",
+        "    moving_avg_7d\r\n",
+        "FROM crypto_analytics.gold.daily_market_summary\r\n",
+        "WHERE trade_date >= '2025-01-01'\r\n",
+        "ORDER BY coin_id, trade_date"
+      ]
+    },
+    {
+      "name": "78ec41bf",
+      "displayName": "volatility_risk",
+      "queryLines": [
+        "SELECT\r\n",
+        "    CASE\r\n",
+        "        WHEN coin_id IN ('btc', 'bitcoin')       THEN 'bitcoin'\r\n",
+        "        WHEN coin_id IN ('bnb', 'binancecoin')   THEN 'binancecoin'\r\n",
+        "        WHEN coin_id IN ('eth', 'ethereum')       THEN 'ethereum'\r\n",
+        "        WHEN coin_id IN ('sol', 'solana')         THEN 'solana'\r\n",
+        "        WHEN coin_id IN ('ada', 'cardano')        THEN 'cardano'\r\n",
+        "        WHEN coin_id IN ('xrp', 'ripple')         THEN 'ripple'\r\n",
+        "        WHEN coin_id IN ('doge', 'dogecoin')      THEN 'dogecoin'\r\n",
+        "        WHEN coin_id IN ('dot', 'polkadot')       THEN 'polkadot'\r\n",
+        "        WHEN coin_id IN ('link', 'chainlink')     THEN 'chainlink'\r\n",
+        "        WHEN coin_id IN ('avax', 'avalanche-2')   THEN 'avalanche'\r\n",
+        "        ELSE coin_id\r\n",
+        "    END AS coin_id,\r\n",
+        "    MAX(volatility_stddev)    AS volatility_stddev,\r\n",
+        "    MAX(avg_daily_return_pct) AS avg_daily_return_pct,\r\n",
+        "    MAX(best_day_return_pct)  AS best_day_return_pct,\r\n",
+        "    MIN(worst_day_return_pct) AS worst_day_return_pct,\r\n",
+        "    MAX(risk_tier)            AS risk_tier,\r\n",
+        "    MAX(total_trading_days)   AS total_trading_days\r\n",
+        "FROM crypto_analytics.gold.coin_volatility\r\n",
+        "GROUP BY 1\r\n",
+        "ORDER BY volatility_stddev DESC"
+      ]
+    },
+    {
+      "name": "d6e0e4e0",
+      "displayName": "top_performers_2025",
+      "queryLines": [
+        "SELECT\r\n",
+        "    CASE\r\n",
+        "        WHEN coin_id IN ('btc', 'bitcoin')           THEN 'bitcoin'\r\n",
+        "        WHEN coin_id IN ('bnb', 'binancecoin')       THEN 'binancecoin'\r\n",
+        "        WHEN coin_id IN ('eth', 'ethereum')           THEN 'ethereum'\r\n",
+        "        WHEN coin_id IN ('sol', 'solana')             THEN 'solana'\r\n",
+        "        WHEN coin_id IN ('ada', 'cardano')            THEN 'cardano'\r\n",
+        "        WHEN coin_id IN ('xrp', 'ripple')             THEN 'ripple'\r\n",
+        "        WHEN coin_id IN ('doge', 'dogecoin')          THEN 'dogecoin'\r\n",
+        "        WHEN coin_id IN ('dot', 'polkadot')           THEN 'polkadot'\r\n",
+        "        WHEN coin_id IN ('link', 'chainlink')         THEN 'chainlink'\r\n",
+        "        WHEN coin_id IN ('avax', 'avalanche-2')       THEN 'avalanche'\r\n",
+        "        ELSE coin_id\r\n",
+        "    END AS coin_id,\r\n",
+        "    month,\r\n",
+        "    monthly_return_pct,\r\n",
+        "    best_single_day_pct,\r\n",
+        "    worst_single_day_pct,\r\n",
+        "    rank\r\n",
+        "FROM crypto_analytics.gold.top_performers_monthly\r\n",
+        "WHERE month >= '2025-01'\r\n",
+        "ORDER BY month DESC, rank ASC"
+      ]
+    },
+    {
+      "name": "13c5a186",
+      "displayName": "market_dominance",
+      "queryLines": [
+        "SELECT\r\n",
+        "    CASE\r\n",
+        "        WHEN coin_id IN ('btc', 'bitcoin')           THEN 'bitcoin'\r\n",
+        "        WHEN coin_id IN ('bnb', 'binancecoin')       THEN 'binancecoin'\r\n",
+        "        WHEN coin_id IN ('eth', 'ethereum')           THEN 'ethereum'\r\n",
+        "        WHEN coin_id IN ('sol', 'solana')             THEN 'solana'\r\n",
+        "        WHEN coin_id IN ('ada', 'cardano')            THEN 'cardano'\r\n",
+        "        WHEN coin_id IN ('xrp', 'ripple')             THEN 'ripple'\r\n",
+        "        WHEN coin_id IN ('doge', 'dogecoin')          THEN 'dogecoin'\r\n",
+        "        WHEN coin_id IN ('dot', 'polkadot')           THEN 'polkadot'\r\n",
+        "        WHEN coin_id IN ('link', 'chainlink')         THEN 'chainlink'\r\n",
+        "        WHEN coin_id IN ('avax', 'avalanche-2')       THEN 'avalanche'\r\n",
+        "        ELSE coin_id\r\n",
+        "    END AS coin_id,\r\n",
+        "    symbol,\r\n",
+        "    snapshot_date,\r\n",
+        "    market_cap_usd,\r\n",
+        "    dominance_pct,\r\n",
+        "    current_price,\r\n",
+        "    mcap_rank\r\n",
+        "FROM crypto_analytics.gold.market_cap_dominance\r\n",
+        "ORDER BY mcap_rank ASC"
+      ]
+    },
+    {
+      "name": "0b777f59",
+      "displayName": "monthly_winner",
+      "queryLines": [
+        "SELECT\r\n",
+        "    month,\r\n",
+        "    CASE\r\n",
+        "        WHEN coin_id IN ('btc', 'bitcoin')           THEN 'bitcoin'\r\n",
+        "        WHEN coin_id IN ('bnb', 'binancecoin')       THEN 'binancecoin'\r\n",
+        "        WHEN coin_id IN ('eth', 'ethereum')           THEN 'ethereum'\r\n",
+        "        WHEN coin_id IN ('sol', 'solana')             THEN 'solana'\r\n",
+        "        WHEN coin_id IN ('ada', 'cardano')            THEN 'cardano'\r\n",
+        "        WHEN coin_id IN ('xrp', 'ripple')             THEN 'ripple'\r\n",
+        "        WHEN coin_id IN ('doge', 'dogecoin')          THEN 'dogecoin'\r\n",
+        "        WHEN coin_id IN ('dot', 'polkadot')           THEN 'polkadot'\r\n",
+        "        WHEN coin_id IN ('link', 'chainlink')         THEN 'chainlink'\r\n",
+        "        WHEN coin_id IN ('avax', 'avalanche-2')       THEN 'avalanche'\r\n",
+        "        ELSE coin_id\r\n",
+        "    END AS coin_id,\r\n",
+        "    monthly_return_pct\r\n",
+        "FROM crypto_analytics.gold.top_performers_monthly\r\n",
+        "WHERE rank = 1\r\n",
+        "  AND month >= '2025-01'\r\n",
+        "ORDER BY month DESC"
+      ]
+    },
+    {
+      "name": "61b66255",
+      "displayName": "daily_return_heatmap",
+      "queryLines": [
+        "SELECT\r\n",
+        "    CASE\r\n",
+        "        WHEN coin_id IN ('btc', 'bitcoin')           THEN 'bitcoin'\r\n",
+        "        WHEN coin_id IN ('bnb', 'binancecoin')       THEN 'binancecoin'\r\n",
+        "        WHEN coin_id IN ('eth', 'ethereum')           THEN 'ethereum'\r\n",
+        "        WHEN coin_id IN ('sol', 'solana')             THEN 'solana'\r\n",
+        "        WHEN coin_id IN ('ada', 'cardano')            THEN 'cardano'\r\n",
+        "        WHEN coin_id IN ('xrp', 'ripple')             THEN 'ripple'\r\n",
+        "        WHEN coin_id IN ('doge', 'dogecoin')          THEN 'dogecoin'\r\n",
+        "        WHEN coin_id IN ('dot', 'polkadot')           THEN 'polkadot'\r\n",
+        "        WHEN coin_id IN ('link', 'chainlink')         THEN 'chainlink'\r\n",
+        "        WHEN coin_id IN ('avax', 'avalanche-2')       THEN 'avalanche'\r\n",
+        "        ELSE coin_id\r\n",
+        "    END AS coin_id,\r\n",
+        "    DATE_FORMAT(trade_date, 'yyyy-MM') AS month,\r\n",
+        "    ROUND(AVG(daily_return_pct), 2)    AS avg_monthly_return\r\n",
+        "FROM crypto_analytics.gold.daily_market_summary\r\n",
+        "WHERE trade_date >= '2025-01-01'\r\n",
+        "GROUP BY coin_id, DATE_FORMAT(trade_date, 'yyyy-MM')\r\n",
+        "ORDER BY coin_id, month"
+      ]
+    },
+    {
+      "name": "2db6c1ff",
+      "displayName": "pipeline_summary",
+      "queryLines": [
+        "WITH cleaned AS (\r\n",
+        "    SELECT\r\n",
+        "        CASE\r\n",
+        "            WHEN coin_id IN ('btc', 'bitcoin')       THEN 'bitcoin'\r\n",
+        "            WHEN coin_id IN ('bnb', 'binancecoin')   THEN 'binancecoin'\r\n",
+        "            WHEN coin_id IN ('eth', 'ethereum')       THEN 'ethereum'\r\n",
+        "            WHEN coin_id IN ('sol', 'solana')         THEN 'solana'\r\n",
+        "            WHEN coin_id IN ('ada', 'cardano')        THEN 'cardano'\r\n",
+        "            WHEN coin_id IN ('xrp', 'ripple')         THEN 'ripple'\r\n",
+        "            WHEN coin_id IN ('doge', 'dogecoin')      THEN 'dogecoin'\r\n",
+        "            WHEN coin_id IN ('dot', 'polkadot')       THEN 'polkadot'\r\n",
+        "            WHEN coin_id IN ('link', 'chainlink')     THEN 'chainlink'\r\n",
+        "            WHEN coin_id IN ('avax', 'avalanche-2')   THEN 'avalanche'\r\n",
+        "            ELSE coin_id\r\n",
+        "        END AS coin_id,\r\n",
+        "        trade_date\r\n",
+        "    FROM crypto_analytics.gold.daily_market_summary\r\n",
+        ")\r\n",
+        "SELECT 'Total Coins'        AS metric, COUNT(DISTINCT coin_id)  AS value FROM cleaned\r\n",
+        "UNION ALL\r\n",
+        "SELECT 'Total Trading Days' AS metric, COUNT(DISTINCT trade_date) AS value FROM cleaned\r\n",
+        "UNION ALL\r\n",
+        "SELECT 'Total Records'      AS metric, COUNT(*)                 AS value FROM cleaned"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "ce0c58e7",
+      "displayName": "Global Filters",
+      "pageType": "PAGE_TYPE_GLOBAL_FILTERS"
+    },
+    {
+      "name": "75b47e04",
+      "displayName": "Untitled page",
+      "layout": [
+        {
+          "widget": {
+            "name": "3d4f7f6d",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "2db6c1ff",
+                  "fields": [
+                    {
+                      "name": "sum(value)",
+                      "expression": "SUM(`value`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`metric` IN ('Total Records')"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "📊 Total Records"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(value)"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 0,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "d16ff9d9",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "2db6c1ff",
+                  "fields": [
+                    {
+                      "name": "sum(value)",
+                      "expression": "SUM(`value`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`metric` IN ('Total Coins')"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "🪙 Total Coins"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(value)"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 0,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "36891b01",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "2db6c1ff",
+                  "fields": [
+                    {
+                      "name": "sum(value)",
+                      "expression": "SUM(`value`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`metric` IN ('Total Trading Days')"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "📅 Trading Days"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(value)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 2
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 7,
+            "y": 0,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "btc-price-trend",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "30d30e9a",
+                  "fields": [
+                    {
+                      "name": "trade_date",
+                      "expression": "`trade_date`"
+                    },
+                    {
+                      "name": "close",
+                      "expression": "`close`"
+                    },
+                    {
+                      "name": "moving_avg_7d",
+                      "expression": "`moving_avg_7d`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "BTC Price vs 7-Day Moving Average (2025)"
+              },
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "trade_date",
+                  "displayName": "trade_date",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "fields": [
+                    {
+                      "fieldName": "close"
+                    },
+                    {
+                      "fieldName": "moving_avg_7d"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 4,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "all-coins-price-trends-2025",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "df2ec882",
+                  "fields": [
+                    {
+                      "name": "coin_id",
+                      "expression": "`coin_id`"
+                    },
+                    {
+                      "name": "trade_date",
+                      "expression": "`trade_date`"
+                    },
+                    {
+                      "name": "close",
+                      "expression": "`close`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "All Coins Price Trends 2025"
+              },
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "trade_date",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "close",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "coin_id",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": false
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 2,
+            "width": 4,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "coin-volatility-risk-classification",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "78ec41bf",
+                  "fields": [
+                    {
+                      "name": "risk_tier",
+                      "expression": "`risk_tier`"
+                    },
+                    {
+                      "name": "coin_id",
+                      "expression": "`coin_id`"
+                    },
+                    {
+                      "name": "volatility_stddev",
+                      "expression": "`volatility_stddev`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Coin Volatility & Risk Classification"
+              },
+              "mark": {
+                "layout": "group"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "coin_id",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "volatility_stddev",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "risk_tier",
+                  "scale": {
+                    "type": "categorical",
+                    "mappings": [
+                      {
+                        "value": "🔴 High",
+                        "color": "#DD0505"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 7,
+            "width": 4,
+            "height": 8
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
