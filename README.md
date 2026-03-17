@@ -5,15 +5,15 @@ End-to-end crypto market data pipeline built on Databricks Free Edition
 using Delta Live Tables, Autoloader, Unity Catalog, and AI/BI Dashboards.
 
 ### DLT Lineage Graph
-![DLT Pipeline](architecture/dlt_pipeline_lineage.png)
+![DLT Pipeline](architecture/dlt_pipeline_lineage.PNG)
 
 > Bronze → Silver → Gold | 8 tables | 0 errors | 26K+ records processed
 
 ### Page 1 — Price Trends & Market Overview
-![Dashboard Page 1]([architecture/Dashboard-page1.png](https://github.com/Sagar30601/databricks-crypto-dlt-medallion/blob/97f3ae1153c80ad304d649f4754b26aae287eb9f/architecture/Dashboard-page1.PNG))
+![Dashboard Page 1]([architecture/Dashboard-page1.PNG])
 
 ### Page 2 — Heatmap & Rankings
-![Dashboard Page 2](architecture/Dashboard-page2.png)
+![Dashboard Page 2](architecture/Dashboard-page2.PNG)
 
 > Built on Databricks AI/BI Dashboard | 9 visualisations | 8 datasets
 
